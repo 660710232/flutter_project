@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "57114072055",
+    "project_id": "library-of-dream-ff334",
+    "storage_bucket": "library-of-dream-ff334.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57114072055:android:07a1505b9d03c9950e14f2",
+        "android_client_info": {
+          "package_name": "com.example.flutter_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1KzOHbxsD3bwNI52KSeTzRHxPUtMEiJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
