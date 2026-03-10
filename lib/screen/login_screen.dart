@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/const/color_theme.dart';
 import 'package:flutter_project/const/form_space.dart';
@@ -19,10 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String textError = '';
-  final CollectionReference users = FirebaseFirestore.instance.collection(
-    'Users',
-  );
-  bool passwordVisible = false;
+  bool passwordVisible = true;
 
   void triggerPasswordVisible() {
     passwordVisible = !passwordVisible;
