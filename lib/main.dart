@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/const/color_theme.dart';
 import 'package:flutter_project/firebase_options.dart';
-import 'package:flutter_project/screen/login_screen1.dart';
+import 'package:flutter_project/screen/login_screen.dart';
 import 'package:flutter_project/screen/welcome_screen.dart';
 
 void main() async {
