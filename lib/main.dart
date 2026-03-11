@@ -1,15 +1,22 @@
+import 'package:email_otp/email_otp.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/const/color_theme.dart';
 import 'package:flutter_project/firebase_options.dart';
 import 'package:flutter_project/screen/login_screen.dart';
-import 'package:flutter_project/screen/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  EmailOTP.config(
+    appEmail: "libraryofdream.app@gmail.com",
+    appName: "Library Of Dream",
+    otpType: OTPType.numeric,
+    otpLength: 6,
+    emailTheme: EmailTheme.v4,
+    expiry: 30000,
+
   );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MainWidget());
 }

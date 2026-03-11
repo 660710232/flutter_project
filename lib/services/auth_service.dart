@@ -1,11 +1,14 @@
+import 'package:bcrypt/bcrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_otp/email_otp.dart';
 import 'package:flutter_project/model/users.dart';
 
 class AuthService {
+
   Future<bool> login(String username, String password) async {
     User? user = await getUser(username);
     // print(user?.name);
-    if (user != null && user.password == password) {
+    if (user != null && BCrypt.checkpw(password, user.password)) {
       return true;
     }
 
@@ -33,7 +36,8 @@ class AuthService {
     String lastname,
     String email,
   ) async {
-    User user = User(username, password, name, lastname, email);
+    final String hash = BCrypt.hashpw(password, BCrypt.gensalt());
+    User user = User(username, hash, name, lastname, email);
     await FirebaseFirestore.instance.collection('users').add(user.toJson());
     print('register success');
   }
