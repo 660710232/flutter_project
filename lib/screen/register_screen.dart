@@ -18,11 +18,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   bool passwordVisible = true;
   String textError = '';
+  bool registerClick = false;
 
   void triggerPasswordVisible() {
     passwordVisible = !passwordVisible;
@@ -33,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Center(
         child: Container(
-          height: 650,
+          height: 500,
           width: 400,
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -65,6 +64,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: formSpace),
                 TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter Email : example@gmail.com',
+                  ),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please Enter Email';
+                    }
+
+                    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                      return "Invalid Email Format";
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: formSpace),
+                TextFormField(
                   controller: _passwordController,
                   obscureText: passwordVisible,
                   decoration: InputDecoration(
@@ -87,6 +105,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return 'Please Enter Password';
+                    }
+                    if (value.length < 8) {
+                      return 'password must have at at least 8 characters';
                     }
                     return null;
                   },
@@ -117,52 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return 'Please Enter Confirm Password';
                     } else if (_confirmPasswordController.text !=
                         _passwordController.text) {
-                      return 'Confirm Password is not correct!';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: formSpace),
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Name',
-                  ),
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Name';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: formSpace),
-                TextFormField(
-                  controller: _lastnameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Lastname',
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Lastname',
-                  ),
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Lastname';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: formSpace),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter Email',
-                  ),
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please Enter Email';
+                      return 'Confirm Password is not match!';
                     }
                     return null;
                   },
@@ -180,10 +156,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         );
                       },
-                      child: Text('I have account', style: button1.copyWith(
+                      child: Text(
+                        'I have account',
+                        style: button1.copyWith(
                           fontSize: 12,
                           fontStyle: FontStyle.italic,
-                        ),),
+                        ),
+                      ),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -191,41 +170,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         backgroundColor: backgroundColorButton,
                         textStyle: button1,
                       ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          AuthService auth = AuthService();
-                          bool success = await auth.checkUserAvailable(
-                            _usernameController.text,
-                          );
+                      onPressed: registerClick
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  registerClick = true;
+                                });
+                                AuthService auth = AuthService();
+                                bool userAvai = await auth.checkUserAvailable(
+                                  _usernameController.text,
+                                );
 
-                          if (success) {
-                            auth.setUser(
-                              _usernameController.text,
-                              _passwordController.text,
-                              _nameController.text,
-                              _lastnameController.text,
-                              _emailController.text,
-                            );
+                                bool emailAvai = await auth.checkEmailAvailable(
+                                  _emailController.text,
+                                );
 
-                            success = !await auth.checkUserAvailable(
-                              _usernameController.text,
-                            );
-                            if (success) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ),
-                              );
-                            }
-                          } else {
-                            setState(() {
-                              textError =
-                                  'This username has already been used.';
-                            });
-                          }
-                        }
-                      },
+                                if (userAvai && emailAvai) {
+                                  bool register = await auth.register(
+                                    _usernameController.text,
+                                    _emailController.text.trim(),
+                                    _passwordController.text,
+                                  );
+                                  if (register) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen(),
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  setState(() {
+                                    textError =
+                                        'This username or email has already been used.';
+                                  });
+                                }
+                              }
+                            },
                       child: Text('Register', style: button1),
                     ),
                   ],
