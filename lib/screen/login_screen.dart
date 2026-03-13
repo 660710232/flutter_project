@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/const/color_theme.dart';
 import 'package:flutter_project/const/form_space.dart';
@@ -15,7 +16,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String textError = '';
   bool passwordVisible = true;
@@ -23,6 +24,15 @@ class _LoginScreenState extends State<LoginScreen> {
   void triggerPasswordVisible() {
     passwordVisible = !passwordVisible;
   }
+
+  Future<String> getUsername(String email) async {
+  var result = await FirebaseFirestore.instance
+      .collection('users')
+      .where('email', isEqualTo: email)
+      .get();
+
+  return result.docs.first['username'];
+}
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(textError, style: errorlogin),
                 SizedBox(height: 30),
                 TextFormField(
-                  controller: _usernameController,
+                  controller: _emailController,
                   decoration: const InputDecoration(
-                    labelText: 'Username',
+                    labelText: 'Email',
                     border: OutlineInputBorder(),
-                    hintText: 'Enter Username',
+                    hintText: 'Enter Email',
                   ),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
@@ -118,23 +128,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         if (_formKey.currentState!.validate()) {
                           AuthService auth = AuthService();
                           bool success = await auth.login(
-                            _usernameController.text,
+                            _emailController.text,
                             _passwordController.text,
                           );
-
-                          if (success) {
+                          if (success){
                             print('success');
+                            String username = await getUsername(_emailController.text);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const LibraryScreen(),
+                                builder: (context) => LibraryScreen(username: username,),
                               ),
                             );
                           } else {
                             setState(() {
-                              textError = 'Username or Password Incorrect';
+                              textError = 'Email or Password Incorrect';
                             });
-                            print('Username or password incorrect');
+                            print('Email or password incorrect');
                           }
                         } else {
                           print('form invalid');
