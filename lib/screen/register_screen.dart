@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/component/navigator_to_login_screen.dart';
 import 'package:flutter_project/const/color_theme.dart';
 import 'package:flutter_project/const/form_space.dart';
 import 'package:flutter_project/const/style_theme.dart';
@@ -147,23 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'I have account',
-                        style: button1.copyWith(
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
+                    NavigatorToLoginScreen(),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: foregroundColorButton,

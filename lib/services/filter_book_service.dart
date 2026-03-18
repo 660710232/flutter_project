@@ -19,7 +19,8 @@ class FilterBookService {
   Future<List<Book>> getReadUserBooks() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('books')
-        .where('username', isEqualTo: username).where('read', isEqualTo: 'Read')
+        .where('username', isEqualTo: username)
+        .where('read', isEqualTo: 'Read')
         .get();
 
     return snapshot.docs
@@ -30,7 +31,8 @@ class FilterBookService {
   Future<List<Book>> getUnreadUserBooks() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('books')
-        .where('username', isEqualTo: username).where('read', isEqualTo: 'Unread')
+        .where('username', isEqualTo: username)
+        .where('read', isEqualTo: 'Unread')
         .get();
 
     return snapshot.docs
@@ -41,7 +43,8 @@ class FilterBookService {
   Future<List<Book>> getReadingUserBooks() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('books')
-        .where('username', isEqualTo: username).where('read', isEqualTo: 'Reading')
+        .where('username', isEqualTo: username)
+        .where('read', isEqualTo: 'Reading')
         .get();
 
     return snapshot.docs

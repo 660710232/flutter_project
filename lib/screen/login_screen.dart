@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/component/navigator_to_register_screen.dart';
 import 'package:flutter_project/const/color_theme.dart';
 import 'package:flutter_project/const/form_space.dart';
 import 'package:flutter_project/const/style_theme.dart';
+import 'package:flutter_project/const/app_text.dart';
+import 'package:flutter_project/screen/home_screen.dart';
 import 'package:flutter_project/screen/library_screen.dart';
 import 'package:flutter_project/screen/register_screen.dart';
 import 'package:flutter_project/services/auth_service.dart';
@@ -51,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Login to your Library', style: title1),
+                Text(appName, style: title1),
                 SizedBox(height: 5),
                 Text(textError, style: errorlogin),
                 SizedBox(height: 30),
@@ -101,23 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'You don\'t have account?',
-                        style: button1.copyWith(
-                          fontSize: 12,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
+                    NavigatorToRegisterScreen(),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: foregroundColorButton,
@@ -137,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LibraryScreen(username: username,),
+                                builder: (context) => HomeScreen(username: username),
                               ),
                             );
                           } else {
