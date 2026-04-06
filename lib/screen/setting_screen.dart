@@ -95,7 +95,7 @@ class _SettingScreenState extends State<SettingScreen> {
           SizedBox(height: formSpace),
 
 
-          Text("Appearance", style: body2),
+          Text("Statistic", style: body2),
           SizedBox(height: formSpace),
           Card(
             child: Column(
