@@ -1,7 +1,7 @@
 class Book {
   final String title;
   final String author;
-  final String read;
+  String read;
   final String username;
 
   Book(this.title, this.author, this.read, this.username);

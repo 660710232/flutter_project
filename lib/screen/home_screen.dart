@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     pages = [
       LibraryScreen(username: widget.username),
       AddBookScreen(username: widget.username),
-      SettingsScreen(username: widget.username),
+      SettingScreen(username: widget.username),
     ];
   }
 

@@ -22,7 +22,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   bool passwordVisible = true;
   String textError = '';
-  bool registerClick = false;
 
   void triggerPasswordVisible() {
     passwordVisible = !passwordVisible;
@@ -155,13 +154,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         backgroundColor: backgroundColorButton,
                         textStyle: button1,
                       ),
-                      onPressed: registerClick
-                          ? null
-                          : () async {
+                      onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                setState(() {
-                                  registerClick = true;
-                                });
                                 AuthService auth = AuthService();
                                 bool userAvai = await auth.checkUserAvailable(
                                   _usernameController.text,

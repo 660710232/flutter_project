@@ -6,8 +6,6 @@ import 'package:flutter_project/const/form_space.dart';
 import 'package:flutter_project/const/style_theme.dart';
 import 'package:flutter_project/const/app_text.dart';
 import 'package:flutter_project/screen/home_screen.dart';
-import 'package:flutter_project/screen/library_screen.dart';
-import 'package:flutter_project/screen/register_screen.dart';
 import 'package:flutter_project/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
